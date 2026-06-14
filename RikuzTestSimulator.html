@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>סימולטור צו ראשון</title>
+<style>
+/* עיצוב המקור המקצועי */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --bg: #05090f; --surface: #0b1220; --border: #172034; --border2: #1e2f4a; --text: #d8e8f5; --muted: #4d6a88; --accent: #3b82f6; --green: #22c55e; --red: #ef4444; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: sans-serif; direction: rtl; user-select: none; overflow: hidden; }
+.screen { display: none; width: 100%; height: 100dvh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+.screen.active { display: flex; }
+.title-main { font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
+.time-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px; }
+.t-btn { background: var(--surface); border: 1.5px solid var(--border); color: var(--muted); padding: 10px; border-radius: 8px; cursor: pointer; }
+.t-btn.sel { border-color: var(--accent); color: var(--text); background: #112038; }
+.go-btn { background: var(--accent); color: #fff; border: none; padding: 15px 40px; border-radius: 10px; cursor: pointer; font-weight: 700; }
+.hud { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
+#stim-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+.fixation { color: #28405a; font-size: 3rem; }
+.game-foot { width: 100%; padding: 20px; background: var(--surface); display: flex; justify-content: center; }
+.press-btn { width: 100%; max-width: 300px; padding: 15px; background: var(--surface); border: 1.5px solid var(--border2); color: white; border-radius: 10px; cursor: pointer; }
+#flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.1s; }
+
+/* עיצוב תוצאות מקורי */
+.score-card { background: var(--surface); border: 2px solid var(--border2); border-radius: 18px; padding: 22px 52px; margin-bottom: 16px; width: 100%; max-width: 420px; text-align: center; }
+.sc-num { font-size: 5.5rem; font-weight: 900; line-height: 1.05; color: var(--text); }
+.sc-grade { font-size: 1.1rem; font-weight: 600; margin-top: 1px; color: var(--accent); }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; width: 100%; max-width: 420px; }
+.stat { background: var(--surface); border: 1.5px solid var(--border); border-radius: 11px; padding: 15px 10px; text-align: center; }
+.sv { font-size: 1.75rem; font-weight: 700; }
+.sl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div id="menu-screen" class="screen active">
+  <div class="title-main">סימולטור קשב וריכוז</div>
+  <div class="time-grid" id="time-grid"></div>
+  <button class="go-btn" id="start-btn">התחל</button>
+</div>
+
+<div id="countdown-screen" class="screen"><div style="font-size: 8rem;" id="cd-num">3</div></div>
+
+<div id="game-screen" class="screen">
+  <div class="hud">
+    <div id="hud-time">00:00</div>
+    <div>✓ <span id="hud-h" style="color:var(--green)">0</span> | ✗ <span id="hud-f" style="color:var(--red)">0</span></div>
+  </div>
+  <div id="stim-wrap"><div class="fixation">+</div></div>
+  <div class="game-foot"><button class="press-btn" id="press-btn">לחץ כאן / Space</button></div>
+</div>
+
+<div id="results-screen" class="screen">
+  <div class="score-card">
+    <div class="sc-num" id="r-score">0</div>
+    <div class="sc-grade" id="r-grade">--</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat"><div class="sv" id="r-hits" style="color:var(--green)">0</div><div class="sl">נכונות</div></div>
+    <div class="stat"><div class="sv" id="r-miss" style="color:var(--red)">0</div><div class="sl">פספוסים</div></div>
+    <div class="stat"><div class="sv" id="r-fa" style="color:var(--red)">0</div><div class="sl">שגויות</div></div>
+    <div class="stat"><div class="sv" id="r-rt" style="color:var(--accent)">-</div><div class="sl">זמן תגובה</div></div>
+  </div>
+  <button class="go-btn" style="margin-top:20px" onclick="location.reload()">נסה שוב</button>
+</div>
+
+<div id="flash"></div>
+
+<script>
+const SHAPES = ['circle', 'square', 'triangle', 'diamond'];
+const COLORS = ['#22c55e', '#ef4444', '#3b82f6', '#eab308'];
+const STIM_ON = 300, STIM_OFF = 600, EXTRA_WINDOW = 300;
+let selMin = 5, gameActive = false, hits = 0, fa = 0, misses = 0, nTargets = 0, rts = [], trialIsTarget, trialResponded, canRespond, trialOnset;
+
+// Init
+const grid = document.getElementById('time-grid');
+for (let i = 1; i <= 15; i++) {
+  const b = document.createElement('button');
+  b.className = 't-btn' + (i === selMin ? ' sel' : '');
+  b.textContent = i + "'";
+  b.onclick = () => { selMin = i; document.querySelectorAll('.t-btn').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); };
+  grid.appendChild(b);
+}
+
+document.getElementById('start-btn').onclick = () => {
+    document.getElementById('menu-screen').classList.remove('active');
+    document.getElementById('countdown-screen').classList.add('active');
+    let n = 3, el = document.getElementById('cd-num');
+    let t = setInterval(() => { n--; if(n>0) el.textContent=n; else { clearInterval(t); beginGame(); } }, 1000);
+};
+
+function beginGame() {
+    document.getElementById('countdown-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+    gameActive = true;
+    let timeLeft = selMin * 60;
+    const clock = setInterval(() => {
+        timeLeft--;
+        document.getElementById('hud-time').textContent = Math.floor(timeLeft/60)+":"+(timeLeft%60).toString().padStart(2,'0');
+        if(timeLeft <= 0) { gameActive = false; clearInterval(clock); showResults(); }
+    }, 1000);
+    runTrial();
+}
+
+function runTrial() {
+    if(!gameActive) return;
+    trialIsTarget = Math.random() < 0.28;
+    trialResponded = false;
+    canRespond = true;
+    trialOnset = performance.now();
+    if(trialIsTarget) nTargets++;
+    
+    let color, shape;
+    if (trialIsTarget) {
+        color = COLORS[0];
+        shape = 'circle';
+    } else {
+        do {
+            color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+        } while (color === COLORS[0] && shape === 'circle');
+    }
+    
+    document.getElementById('stim-wrap').innerHTML = `<svg width="150" height="150"><${shape === 'circle'?'circle cx="75" cy="75" r="70"':'rect x="5" y="5" width="140" height="140"'} fill="${color}"/></svg>`;
+    
+    setTimeout(() => {
+        document.getElementById('stim-wrap').innerHTML = '<div class="fixation">+</div>';
+        setTimeout(() => { 
+            canRespond = false; 
+            if(trialIsTarget && !trialResponded) misses++; 
+            runTrial();
+        }, EXTRA_WINDOW);
+    }, STIM_ON);
+}
+
+function handlePress() {
+    if(!gameActive || !canRespond || trialResponded) return;
+    trialResponded = true;
+    const f = document.getElementById('flash');
+    if(trialIsTarget) {
+        hits++;
+        rts.push(performance.now() - trialOnset);
+        document.getElementById('hud-h').textContent = hits;
+        f.style.background = '#22c55e';
+    } else {
+        fa++;
+        document.getElementById('hud-f').textContent = fa;
+        f.style.background = '#ef4444';
+    }
+    f.style.opacity = '0.2';
+    setTimeout(() => f.style.opacity = '0', 100);
+}
+
+document.getElementById('press-btn').onclick = handlePress;
+window.onkeydown = (e) => { if(e.code === 'Space') handlePress(); };
+
+function showResults() {
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('results-screen').classList.add('active');
+    const score = Math.max(0, Math.round(((hits - fa) / (nTargets || 1)) * 100));
+    const avgRt = rts.length ? Math.round(rts.reduce((a,b)=>a+b,0)/rts.length) + "ms" : "-";
+    document.getElementById('r-score').textContent = score;
+    document.getElementById('r-hits').textContent = hits + "/" + nTargets;
+    document.getElementById('r-miss').textContent = misses;
+    document.getElementById('r-fa').textContent = fa;
+    document.getElementById('r-rt').textContent = avgRt;
+    document.getElementById('r-grade').textContent = score > 85 ? "מצוין" : score > 70 ? "טוב מאוד" : score > 50 ? "בינוני" : "דרוש שיפור";
+}
+</script>
+</body>
+</html>
