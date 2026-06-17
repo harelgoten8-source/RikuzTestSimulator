@@ -2,171 +2,548 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>סימולטור צו ראשון</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrainCPT — סימולטור קשב לצו ראשון</title>
 <style>
-/* עיצוב המקור המקצועי */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root { --bg: #05090f; --surface: #0b1220; --border: #172034; --border2: #1e2f4a; --text: #d8e8f5; --muted: #4d6a88; --accent: #3b82f6; --green: #22c55e; --red: #ef4444; }
-html, body { height: 100%; background: var(--bg); color: var(--text); font-family: sans-serif; direction: rtl; user-select: none; overflow: hidden; }
-.screen { display: none; width: 100%; height: 100dvh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-.screen.active { display: flex; }
-.title-main { font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
-.time-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px; }
-.t-btn { background: var(--surface); border: 1.5px solid var(--border); color: var(--muted); padding: 10px; border-radius: 8px; cursor: pointer; }
-.t-btn.sel { border-color: var(--accent); color: var(--text); background: #112038; }
-.go-btn { background: var(--accent); color: #fff; border: none; padding: 15px 40px; border-radius: 10px; cursor: pointer; font-weight: 700; }
-.hud { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
-#stim-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
-.fixation { color: #28405a; font-size: 3rem; }
-.game-foot { width: 100%; padding: 20px; background: var(--surface); display: flex; justify-content: center; }
-.press-btn { width: 100%; max-width: 300px; padding: 15px; background: var(--surface); border: 1.5px solid var(--border2); color: white; border-radius: 10px; cursor: pointer; }
-#flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.1s; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050c18;--bg2:#071020;--surface:#0a1624;--surface2:#0e1e30;
+  --border:#152030;--border2:#1d3048;--text:#d8e8f5;--muted:#4e6d8c;
+  --dim:#243450;--accent:#3b82f6;--ab:#60a5fa;--adim:rgba(59,130,246,.1);
+  --green:#22c55e;--red:#ef4444;--yellow:#fbbf24;
+}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;direction:rtl;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
 
-/* עיצוב תוצאות מקורי */
-.score-card { background: var(--surface); border: 2px solid var(--border2); border-radius: 18px; padding: 22px 52px; margin-bottom: 16px; width: 100%; max-width: 420px; text-align: center; }
-.sc-num { font-size: 5.5rem; font-weight: 900; line-height: 1.05; color: var(--text); }
-.sc-grade { font-size: 1.1rem; font-weight: 600; margin-top: 1px; color: var(--accent); }
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; width: 100%; max-width: 420px; }
-.stat { background: var(--surface); border: 1.5px solid var(--border); border-radius: 11px; padding: 15px 10px; text-align: center; }
-.sv { font-size: 1.75rem; font-weight: 700; }
-.sl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,5vw,64px);background:rgba(5,12,24,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border2)}
+.logo{font-size:1.2rem;font-weight:800;color:var(--ab);letter-spacing:-.02em}
+.logo span{font-size:.78rem;font-weight:400;color:var(--muted);margin-right:8px}
+nav{display:flex;align-items:center;gap:22px}
+nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .15s}
+nav a:hover{color:var(--text)}
+.ncta{background:var(--accent)!important;color:#fff!important;padding:7px 18px;border-radius:7px;font-weight:600!important}
+.ncta:hover{background:#2563eb!important;color:#fff!important}
+@media(max-width:460px){.nhide{display:none}}
+
+/* ── BUTTONS ── */
+.btn-p{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .12s,transform .1s;touch-action:manipulation}
+.btn-p:hover{background:#2563eb}.btn-p:active{transform:scale(.97)}
+.btn-g{display:inline-flex;align-items:center;background:transparent;color:var(--text);border:1.5px solid var(--border2);padding:14px 28px;border-radius:10px;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:none;transition:border-color .12s,color .12s}
+.btn-g:hover{border-color:var(--accent);color:var(--ab)}
+
+/* ── SECTION BASE ── */
+section{padding:clamp(56px,9vw,100px) clamp(16px,5vw,80px)}
+.slbl{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ab);font-weight:600;margin-bottom:12px}
+.stitle{font-size:clamp(1.8rem,4vw,2.75rem);font-weight:800;line-height:1.18;letter-spacing:-.02em;margin-bottom:14px}
+.ssub{font-size:1rem;color:var(--muted);line-height:1.75;max-width:600px}
+
+/* ── HERO ── */
+#hero{min-height:calc(100dvh - 58px);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:60px clamp(16px,5vw,80px)}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.045) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent)}
+.hglow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.055) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hinner{position:relative;max-width:680px}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:var(--ab);padding:6px 16px;border-radius:40px;font-size:.8rem;font-weight:600;letter-spacing:.04em;margin-bottom:22px}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:blink 2.2s infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.htitle{font-size:clamp(2.3rem,6vw,4rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:18px}
+.htitle .hi{color:var(--ab)}
+.hdesc{font-size:1.08rem;color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto 32px}
+.hctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:46px}
+.hstats{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;align-items:center}
+.hs{text-align:center}.hsn{font-size:1.85rem;font-weight:800}.hsl{font-size:.73rem;color:var(--muted);margin-top:2px}
+.hsep{width:1px;height:40px;background:var(--border2);align-self:center}
+
+/* ── WHY ── */
+#why{background:var(--bg2)}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:44px}
+.wcard{background:var(--surface);border:1.5px solid var(--border2);border-radius:16px;padding:26px}
+.wcicon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px;background:var(--adim)}
+.wctitle{font-size:1rem;font-weight:700;margin-bottom:9px}
+.wcbody{font-size:.875rem;color:var(--muted);line-height:1.72}
+
+/* ── HOW ── */
+#how{background:var(--bg)}
+.howin{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start;max-width:980px;margin:0 auto}
+@media(max-width:700px){.howin{grid-template-columns:1fr;gap:32px}}
+.steps{margin-top:32px;display:flex;flex-direction:column;gap:22px}
+.step{display:flex;gap:16px;align-items:flex-start}
+.stepn{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--adim);border:1.5px solid rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--ab)}
+.stept{font-weight:700;font-size:.96rem;margin-bottom:4px}
+.stepd{font-size:.86rem;color:var(--muted);line-height:1.62}
+.stepd strong{color:var(--green)}
+.shdemo{background:var(--surface);border:1.5px solid var(--border2);border-radius:18px;padding:26px}
+.sdtitle{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;text-align:center}
+.sdgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sditem{display:flex;flex-direction:column;align-items:center;gap:7px}
+.sdsvg{width:52px;height:52px}
+.sdtag{font-size:.67rem;font-weight:700;padding:2px 9px;border-radius:20px}
+.sdhit{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.28)}
+.sdmiss{background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.18)}
+.sdlbl{font-size:.65rem;color:var(--muted);text-align:center;line-height:1.3}
+
+/* ── TEST ── */
+#test{background:var(--bg2)}
+.twrap{max-width:520px;margin:0 auto}
+.tcard{background:var(--surface);border:1.5px solid var(--border2);border-radius:20px;padding:30px;margin-top:28px}
+.tglbl{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;margin-top:18px}
+.tglbl:first-child{margin-top:0}
+.tgrow{display:flex;gap:7px;margin-bottom:4px}
+.tbtn{flex:1;background:var(--surface2);border:1.5px solid var(--border);color:var(--muted);padding:11px 4px;border-radius:8px;cursor:pointer;font-size:.86rem;font-weight:600;font-family:inherit;transition:all .12s;touch-action:manipulation}
+.tbtn:hover{border-color:var(--accent);color:var(--text)}
+.tbtn.sel{border-color:var(--accent);background:rgba(59,130,246,.1);color:var(--ab)}
+.tdiv{height:1px;background:var(--border);margin:22px 0}
+.tipsbox{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:22px}
+.tipstitle{font-size:.73rem;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase}
+.tip{display:flex;gap:9px;font-size:.83rem;color:var(--muted);padding:3px 0;line-height:1.5}
+.tipa{color:var(--ab);flex-shrink:0}
+.startbtn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:16px;font-size:1.08rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s,transform .1s;touch-action:manipulation}
+.startbtn:hover{background:#2563eb}.startbtn:active{transform:scale(.98)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--border);text-align:center;padding:26px clamp(16px,5vw,80px);font-size:.79rem;color:var(--muted);line-height:1.8}
+
+/* ══ OVERLAYS ══ */
+.overlay{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);flex-direction:column;align-items:center;justify-content:center}
+.overlay.active{display:flex}
+
+/* Countdown */
+#ovcd{gap:18px}
+.cdsub{color:var(--muted);font-size:.9rem}
+.cdn{font-size:clamp(7rem,25vw,12rem);font-weight:900;color:var(--ab);line-height:1;animation:cdpop 1s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes cdpop{0%{transform:scale(1.7);opacity:0}25%{transform:scale(.92);opacity:1}80%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}
+
+/* Game */
+#ovgame{background:var(--bg);justify-content:flex-start;padding:0}
+.hud{width:100%;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--border)}
+.hudtime{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;font-family:'Courier New',monospace;color:var(--ab)}
+.hudscores{display:flex;gap:18px}
+.hhit{color:var(--green);font-weight:700;font-size:.9rem}
+.hfa{color:var(--red);font-weight:700;font-size:.9rem}
+.hbadge{display:inline-block;min-width:26px;text-align:center;background:var(--surface2);border-radius:4px;padding:1px 5px;font-variant-numeric:tabular-nums}
+.garea{flex:1;display:flex;align-items:center;justify-content:center;width:100%}
+#stimwrap{width:clamp(150px,40vmin,230px);height:clamp(150px,40vmin,230px);display:flex;align-items:center;justify-content:center}
+.fix{color:var(--dim);font-size:2.2rem;font-weight:200}
+.pbar{width:100%;height:3px;background:var(--border);flex-shrink:0}
+.pfill{height:100%;background:var(--accent);transition:width 1s linear}
+.gfoot{flex-shrink:0;width:100%;padding:13px 20px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:6px}
+.pressbtn{width:100%;max-width:320px;background:var(--surface2);border:1.5px solid var(--border2);color:var(--muted);padding:14px;border-radius:10px;font-size:.98rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .1s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.pressbtn:active{transform:scale(.96);background:rgba(59,130,246,.07);border-color:var(--accent)}
+.ghint{font-size:.69rem;color:var(--dim)}
+
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:999;transition:opacity .07s}
+
+/* Results */
+#ovres{overflow-y:auto;padding:32px 20px;gap:0}
+.restitle{font-size:1.3rem;font-weight:700;margin-bottom:20px}
+.scorecard{background:var(--surface);border:2px solid var(--border2);border-radius:18px;padding:22px 48px;margin-bottom:16px;width:100%;max-width:400px;text-align:center}
+.scey{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.scn{font-size:5.5rem;font-weight:900;line-height:1.05}
+.scg{font-size:1.1rem;font-weight:600}
+.statsgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;max-width:400px;margin-bottom:18px}
+.stat{background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:14px 10px;text-align:center}
+.stat.wide{grid-column:1/-1}
+.sv{font-size:1.72rem;font-weight:700}
+.sl{font-size:.71rem;color:var(--muted);margin-top:4px;line-height:1.45}
+.cg{color:var(--green)}.cr{color:var(--red)}.cb{color:var(--ab)}.cy{color:var(--yellow)}
+.resbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btnretry{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px 34px;font-size:.98rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s}
+.btnretry:hover{background:#2563eb}
+.btnback{background:transparent;color:var(--muted);border:1.5px solid var(--border2);border-radius:10px;padding:13px 26px;font-size:.98rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .12s}
+.btnback:hover{border-color:var(--accent);color:var(--text)}
 </style>
 </head>
 <body>
 
-<div id="menu-screen" class="screen active">
-  <div class="title-main">סימולטור קשב וריכוז</div>
-  <div class="time-grid" id="time-grid"></div>
-  <button class="go-btn" id="start-btn">התחל</button>
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">TrainCPT <span>סימולטור קשב וריכוז</span></div>
+  <nav>
+    <a href="#why" class="nhide">למה זה חשוב</a>
+    <a href="#how" class="nhide">מדריך</a>
+    <a href="#test" class="ncta">התחל מבחן</a>
+  </nav>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hgrid"></div>
+  <div class="hglow"></div>
+  <div class="hinner">
+    <div class="hbadge"><span class="bdot"></span>מותאם לצו ראשון 2025</div>
+    <h1 class="htitle">תתכונן למבחן<br><span class="hi">הקשב של הצו הראשון</span></h1>
+    <p class="hdesc">סימולטור מדויק למבחן ה-CPT — תרגל מהירות תגובה, ריכוז ועמידות תחת לחץ. הכלי שישפר את שיבוצך.</p>
+    <div class="hctas">
+      <a href="#test" class="btn-p">התחל מבחן ←</a>
+      <a href="#how" class="btn-g">איך זה עובד?</a>
+    </div>
+    <div class="hstats">
+      <div class="hs"><div class="hsn">5</div><div class="hsl">צורות + אליפסה מבלבלת</div></div>
+      <div class="hsep"></div>
+      <div class="hs"><div class="hsn">~200ms</div><div class="hsl">מהירות גירוי</div></div>
+      <div class="hsep"></div>
+      <div class="hs"><div class="hsn">15 דק׳</div><div class="hsl">מקסימום תרגול</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY ═══ -->
+<section id="why">
+  <div class="slbl">למה זה חשוב</div>
+  <h2 class="stitle">מבחן ה-CPT קובע את השיבוץ שלך</h2>
+  <p class="ssub">מבחן הקשב הוא אחד ממבחני הפרופיל הקוגניטיביים המרכזיים בצו הראשון — משפיע ישירות על כשירות לתפקידים דורשניים ויחידות מובחרות.</p>
+  <div class="wgrid">
+    <div class="wcard">
+      <div class="wcicon">🧠</div>
+      <div class="wctitle">מה בודק המבחן?</div>
+      <div class="wcbody">מבחן CPT (Continuous Performance Task) מודד קשב ממושך, מהירות תגובה ויכולת עיכוב — כמה מהר אתה מגיב לגירוי הנכון, ומתעלם מהשאר, לאורך זמן.</div>
+    </div>
+    <div class="wcard">
+      <div class="wcicon">🎯</div>
+      <div class="wctitle">למה זה משנה לשיבוץ?</div>
+      <div class="wcbody">ציון גבוה משפיע על כשירות לתפקידים קוגניטיביים — לוחמה, אינטליגנציה, יחידות טכנולוגיות. ביצועי הקשב נלקחים ברצינות בהליך הסיווג.</div>
+    </div>
+    <div class="wcard">
+      <div class="wcicon">📈</div>
+      <div class="wctitle">אפשר להשתפר?</div>
+      <div class="wcbody">בהחלט. מחקרים מראים שתרגול קבוע של מבחני קשב משפר מהירות תגובה ודיוק. השפעה ניכרת מגיעה אחרי מספר שבועות של תרגול יומי קצר.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW ═══ -->
+<section id="how">
+  <div class="howin">
+    <div>
+      <div class="slbl">מדריך המבחן</div>
+      <h2 class="stitle">איך זה עובד?</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="stepn">1</div>
+          <div>
+            <div class="stept">צורות מופיעות על המסך</div>
+            <div class="stepd">עיגולים, ריבועים, משולשים, יהלומים ואליפסות בצבעים שונים — בקצב אקראי. לפעמים ריצוף מהיר, לפעמים הפסקות ארוכות.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="stepn">2</div>
+          <div>
+            <div class="stept">לחץ רק לעיגול ירוק מושלם</div>
+            <div class="stepd">הגירוי הנכון הוא <strong>עיגול מושלם בצבע ירוק בלבד</strong>. אליפסה ירוקה, עיגול אדום, ריבוע ירוק — לא נחשבים. ההבדל קטן, קריטי.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="stepn">3</div>
+          <div>
+            <div class="stept">חלון תגובה של ~550ms</div>
+            <div class="stepd">הצורה מוצגת כ-200ms. יש עוד ~380ms לאחר ההיעלמות. הגמישות הזו קיימת גם במבחן האמיתי — אל תדאג אם לחצת חצי שנייה מאוחר.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="stepn">4</div>
+          <div>
+            <div class="stept">ציון = דיוק + עיכוב</div>
+            <div class="stepd">הציון מבוסס על Hits פחות False Alarms. לחיצות מיותרות <strong>מורידות ציון</strong> — עדיף לפספס עיגול ירוק מאשר ללחוץ על הצורה הלא נכונה.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shdemo">
+      <div class="sdtitle">מה ללחוץ / מה לא</div>
+      <div class="sdgrid" id="spdemo"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEST ═══ -->
+<section id="test">
+  <div class="twrap">
+    <div class="slbl">המבחן</div>
+    <h2 class="stitle">בחר משך וצא לדרך</h2>
+    <div class="tcard">
+      <div id="timegrid"></div>
+      <div class="tdiv"></div>
+      <div class="tipsbox">
+        <div class="tipstitle">💡 טיפים לפני התחלה</div>
+        <div class="tip"><span class="tipa">→</span>שב זקוף, הפסד את הטלפון — מיקוד מלא</div>
+        <div class="tip"><span class="tipa">→</span>אל תנחש — לחץ רק כשאתה בטוח שזה עיגול עגול ירוק</div>
+        <div class="tip"><span class="tipa">→</span>הקצב אקראי בכוונה — אל תתקבע על מחזוריות</div>
+        <div class="tip"><span class="tipa">→</span>אליפסה ירוקה היא מלכודת — ודא שהצורה עגולה לחלוטין</div>
+      </div>
+      <button class="startbtn" id="startbtn">התחל מבחן ←</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>TrainCPT — סימולטור חינמי ובלתי רשמי למבחן קשב וריכוז</div>
+  <div>אין שיוך לצבא ההגנה לישראל, לגיוס, לצו ראשון, או לכל גוף ממשלתי. הכלי נועד לצורכי תרגול בלבד.</div>
+</footer>
+
+<!-- ════ OVERLAYS ════ -->
+<div id="ovcd" class="overlay">
+  <div class="cdsub">המבחן מתחיל בעוד</div>
+  <div class="cdn" id="cdn">3</div>
 </div>
 
-<div id="countdown-screen" class="screen"><div style="font-size: 8rem;" id="cd-num">3</div></div>
-
-<div id="game-screen" class="screen">
+<div id="ovgame" class="overlay">
   <div class="hud">
-    <div id="hud-time">00:00</div>
-    <div>✓ <span id="hud-h" style="color:var(--green)">0</span> | ✗ <span id="hud-f" style="color:var(--red)">0</span></div>
+    <div class="hudtime" id="hudtime">00:00</div>
+    <div class="hudscores">
+      <span class="hhit">✓ <span class="hbadge" id="hudh">0</span></span>
+      <span class="hfa">✗ <span class="hbadge" id="hudfa">0</span></span>
+    </div>
   </div>
-  <div id="stim-wrap"><div class="fixation">+</div></div>
-  <div class="game-foot"><button class="press-btn" id="press-btn">לחץ כאן / Space</button></div>
+  <div class="garea">
+    <div id="stimwrap"><div class="fix">+</div></div>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill" style="width:100%"></div></div>
+  <div class="gfoot">
+    <button class="pressbtn" id="pressbtn">לחץ כאן &nbsp;/&nbsp; SPACE</button>
+    <div class="ghint">לחץ רק כשמופיע עיגול ירוק מושלם</div>
+  </div>
 </div>
 
-<div id="results-screen" class="screen">
-  <div class="score-card">
-    <div class="sc-num" id="r-score">0</div>
-    <div class="sc-grade" id="r-grade">--</div>
+<div id="ovres" class="overlay">
+  <div class="restitle">תוצאות המבחן</div>
+  <div class="scorecard">
+    <div class="scey">ציון סופי</div>
+    <div class="scn" id="rscore">—</div>
+    <div class="scg" id="rgrade">—</div>
   </div>
-  <div class="stats-grid">
-    <div class="stat"><div class="sv" id="r-hits" style="color:var(--green)">0</div><div class="sl">נכונות</div></div>
-    <div class="stat"><div class="sv" id="r-miss" style="color:var(--red)">0</div><div class="sl">פספוסים</div></div>
-    <div class="stat"><div class="sv" id="r-fa" style="color:var(--red)">0</div><div class="sl">שגויות</div></div>
-    <div class="stat"><div class="sv" id="r-rt" style="color:var(--accent)">-</div><div class="sl">זמן תגובה</div></div>
+  <div class="statsgrid">
+    <div class="stat"><div class="sv cg" id="rhits">0/0</div><div class="sl">לחיצות נכונות<br>Hits</div></div>
+    <div class="stat"><div class="sv cr" id="rmiss">0</div><div class="sl">פספוסים<br>Misses</div></div>
+    <div class="stat"><div class="sv cr" id="rfa">0</div><div class="sl">לחיצות שגויות<br>False Alarms</div></div>
+    <div class="stat"><div class="sv cb" id="rrt">—</div><div class="sl">זמן תגובה ממוצע</div></div>
+    <div class="stat wide"><div class="sv cy" id="rtotal">0</div><div class="sl">סה"כ גירויים שהוצגו</div></div>
   </div>
-  <button class="go-btn" style="margin-top:20px" onclick="location.reload()">נסה שוב</button>
+  <div class="resbtns">
+    <button class="btnretry" id="retrybtn">נסה שוב</button>
+    <button class="btnback" id="backbtn">חזור לאתר</button>
+  </div>
 </div>
 
 <div id="flash"></div>
 
 <script>
-const SHAPES = ['circle', 'square', 'triangle', 'diamond'];
-const COLORS = ['#22c55e', '#ef4444', '#3b82f6', '#eab308'];
-const STIM_ON = 300, STIM_OFF = 600, EXTRA_WINDOW = 300;
-let selMin = 5, gameActive = false, hits = 0, fa = 0, misses = 0, nTargets = 0, rts = [], trialIsTarget, trialResponded, canRespond, trialOnset;
+// ── CONFIG ──
+const SHAPES=['circle','square','triangle','diamond','ellipse'];
+const COLORS=[
+  {id:'green', h:'#22c55e'},{id:'red',    h:'#ef4444'},
+  {id:'blue',  h:'#3b82f6'},{id:'yellow', h:'#eab308'},
+  {id:'orange',h:'#f97316'},{id:'purple', h:'#a855f7'},
+];
+const T_SHAPE='circle', T_COLOR='green', T_RATE=0.27;
+const GRACE=380; // ms response window after stim disappears
 
-// Init
-const grid = document.getElementById('time-grid');
-for (let i = 1; i <= 15; i++) {
-  const b = document.createElement('button');
-  b.className = 't-btn' + (i === selMin ? ' sel' : '');
-  b.textContent = i + "'";
-  b.onclick = () => { selMin = i; document.querySelectorAll('.t-btn').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); };
-  grid.appendChild(b);
+function rDur(){ return 150+Math.random()*120; } // 150-270ms
+function rISI(){
+  const r=Math.random();
+  if(r<.18) return 120+Math.random()*160;   // rapid burst: 120-280ms
+  if(r<.42) return 400+Math.random()*300;   // fast: 400-700ms
+  return 750+Math.random()*1350;            // relaxed: 750-2100ms
 }
 
-document.getElementById('start-btn').onclick = () => {
-    document.getElementById('menu-screen').classList.remove('active');
-    document.getElementById('countdown-screen').classList.add('active');
-    let n = 3, el = document.getElementById('cd-num');
-    let t = setInterval(() => { n--; if(n>0) el.textContent=n; else { clearInterval(t); beginGame(); } }, 1000);
-};
+// ── STATE ──
+let selMin=5, gameActive=false, timeLeft=0, totalSec=0;
+let clockId=null, timers=[];
+let phase='off';
+let ts={isTarget:false,responded:false,onset:0};
+let hits=0,misses=0,fa=0,nT=0,nN=0,rts=[];
 
-function beginGame() {
-    document.getElementById('countdown-screen').classList.remove('active');
-    document.getElementById('game-screen').classList.add('active');
-    gameActive = true;
-    let timeLeft = selMin * 60;
-    const clock = setInterval(() => {
-        timeLeft--;
-        document.getElementById('hud-time').textContent = Math.floor(timeLeft/60)+":"+(timeLeft%60).toString().padStart(2,'0');
-        if(timeLeft <= 0) { gameActive = false; clearInterval(clock); showResults(); }
-    }, 1000);
-    runTrial();
-}
+// ── INIT ──
+(function(){
+  buildGrid(); buildDemo();
+  document.getElementById('startbtn').addEventListener('click',startCD);
+  document.getElementById('retrybtn').addEventListener('click',()=>{closeOv('ovres');startCD();});
+  document.getElementById('backbtn').addEventListener('click',()=>closeOv('ovres'));
+  const pb=document.getElementById('pressbtn');
+  pb.addEventListener('touchstart',e=>{e.preventDefault();press();},{passive:false});
+  pb.addEventListener('click',press);
+  document.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat){e.preventDefault();press();}});
+})();
 
-function runTrial() {
-    if(!gameActive) return;
-    trialIsTarget = Math.random() < 0.28;
-    trialResponded = false;
-    canRespond = true;
-    trialOnset = performance.now();
-    if(trialIsTarget) nTargets++;
-    
-    let color, shape;
-    if (trialIsTarget) {
-        color = COLORS[0];
-        shape = 'circle';
-    } else {
-        do {
-            color = COLORS[Math.floor(Math.random() * COLORS.length)];
-            shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-        } while (color === COLORS[0] && shape === 'circle');
+function buildGrid(){
+  const groups=[
+    {lbl:'קצר — מבחן מהיר',a:1,b:5},
+    {lbl:'בינוני — תרגול מוצלח',a:6,b:10},
+    {lbl:'מלא — כמו הצו הראשון',a:11,b:15},
+  ];
+  const c=document.getElementById('timegrid');
+  groups.forEach(g=>{
+    const d=document.createElement('div');
+    d.className='tglbl'; d.textContent=g.lbl; c.appendChild(d);
+    const row=document.createElement('div');
+    row.className='tgrow';
+    for(let i=g.a;i<=g.b;i++){
+      const b=document.createElement('button');
+      b.className='tbtn'+(i===selMin?' sel':'');
+      b.textContent=i+"'"; b.dataset.m=i;
+      b.addEventListener('click',()=>{
+        selMin=i;
+        c.querySelectorAll('.tbtn').forEach(el=>el.classList.toggle('sel',+el.dataset.m===i));
+      });
+      row.appendChild(b);
     }
-    
-    document.getElementById('stim-wrap').innerHTML = `<svg width="150" height="150"><${shape === 'circle'?'circle cx="75" cy="75" r="70"':'rect x="5" y="5" width="140" height="140"'} fill="${color}"/></svg>`;
-    
-    setTimeout(() => {
-        document.getElementById('stim-wrap').innerHTML = '<div class="fixation">+</div>';
-        setTimeout(() => { 
-            canRespond = false; 
-            if(trialIsTarget && !trialResponded) misses++; 
-            runTrial();
-        }, EXTRA_WINDOW);
-    }, STIM_ON);
+    c.appendChild(row);
+  });
 }
 
-function handlePress() {
-    if(!gameActive || !canRespond || trialResponded) return;
-    trialResponded = true;
-    const f = document.getElementById('flash');
-    if(trialIsTarget) {
-        hits++;
-        rts.push(performance.now() - trialOnset);
-        document.getElementById('hud-h').textContent = hits;
-        f.style.background = '#22c55e';
+function buildDemo(){
+  const demos=[
+    {s:'circle',  c:'#22c55e',lbl:'עיגול ירוק',hit:true},
+    {s:'ellipse', c:'#22c55e',lbl:'אליפסה ירוקה',hit:false},
+    {s:'circle',  c:'#ef4444',lbl:'עיגול אדום',hit:false},
+    {s:'square',  c:'#3b82f6',lbl:'ריבוע כחול',hit:false},
+    {s:'triangle',c:'#eab308',lbl:'משולש',hit:false},
+    {s:'diamond', c:'#a855f7',lbl:'יהלום',hit:false},
+  ];
+  const g=document.getElementById('spdemo');
+  demos.forEach(d=>{
+    g.insertAdjacentHTML('beforeend',`
+      <div class="sditem">
+        <svg class="sdsvg" viewBox="0 0 160 160">${svgp(d.s,d.c)}</svg>
+        <span class="sdtag ${d.hit?'sdhit':'sdmiss'}">${d.hit?'✓ לחץ':'✗ דלג'}</span>
+        <span class="sdlbl">${d.lbl}</span>
+      </div>`);
+  });
+}
+
+function openOv(id){
+  document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeOv(id){
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow='';
+}
+
+function startCD(){
+  openOv('ovcd'); let n=3;
+  const el=document.getElementById('cdn');
+  function tick(){
+    el.textContent=n===0?'קדימה!':n;
+    el.style.animation='none'; void el.offsetWidth;
+    el.style.animation='cdpop 1s cubic-bezier(.22,1,.36,1) forwards';
+    if(n===0) setTimeout(beginGame,800); else{n--;setTimeout(tick,1000);}
+  }
+  tick();
+}
+
+function beginGame(){
+  hits=misses=fa=nT=nN=0; rts=[]; timers=[]; phase='off';
+  timeLeft=totalSec=selMin*60; gameActive=true;
+  document.getElementById('hudh').textContent='0';
+  document.getElementById('hudfa').textContent='0';
+  document.getElementById('hudtime').textContent=fmt(timeLeft);
+  const pf=document.getElementById('pfill');
+  pf.style.transition='none'; pf.style.width='100%';
+  void pf.offsetWidth; pf.style.transition='width 1s linear';
+  openOv('ovgame'); renderFix();
+  clockId=setInterval(()=>{
+    timeLeft--;
+    document.getElementById('hudtime').textContent=fmt(timeLeft);
+    document.getElementById('pfill').style.width=(timeLeft/totalSec*100)+'%';
+    if(timeLeft<=0) endGame();
+  },1000);
+  push(setTimeout(runTrial,600));
+}
+
+function push(id){timers.push(id);return id;}
+
+function runTrial(){
+  if(!gameActive) return;
+  const isT=Math.random()<T_RATE;
+  let sh,col;
+  if(isT){sh=T_SHAPE;col=COLORS.find(c=>c.id===T_COLOR);nT++;}
+  else{
+    let tries=0;
+    do{sh=SHAPES[Math.floor(Math.random()*SHAPES.length)];col=COLORS[Math.floor(Math.random()*COLORS.length)];}
+    while(sh===T_SHAPE&&col.id===T_COLOR&&++tries<20);
+    nN++;
+  }
+  ts={isTarget:isT,responded:false,onset:performance.now()};
+  phase='on'; renderShape(sh,col.h);
+  push(setTimeout(()=>{
+    phase='grace'; renderFix();
+    push(setTimeout(()=>{
+      if(ts.isTarget&&!ts.responded) misses++;
+      phase='off';
+      push(setTimeout(runTrial,rISI()));
+    },GRACE));
+  },rDur()));
+}
+
+function press(){
+  if(!gameActive) return;
+  if(phase==='on'||phase==='grace'){
+    if(ts.responded) return;
+    ts.responded=true;
+    if(ts.isTarget){
+      hits++; rts.push(performance.now()-ts.onset);
+      document.getElementById('hudh').textContent=hits;
+      flash('#22c55e',.13);
     } else {
-        fa++;
-        document.getElementById('hud-f').textContent = fa;
-        f.style.background = '#ef4444';
+      fa++;
+      document.getElementById('hudfa').textContent=fa;
+      flash('#ef4444',.2);
     }
-    f.style.opacity = '0.2';
-    setTimeout(() => f.style.opacity = '0', 100);
+  } else {
+    fa++;
+    document.getElementById('hudfa').textContent=fa;
+    flash('#ef4444',.18);
+  }
 }
 
-document.getElementById('press-btn').onclick = handlePress;
-window.onkeydown = (e) => { if(e.code === 'Space') handlePress(); };
+function endGame(){
+  gameActive=false; phase='off';
+  clearInterval(clockId); timers.forEach(clearTimeout); timers=[];
+  renderFix(); setTimeout(showResults,500);
+}
 
-function showResults() {
-    document.getElementById('game-screen').classList.remove('active');
-    document.getElementById('results-screen').classList.add('active');
-    const score = Math.max(0, Math.round(((hits - fa) / (nTargets || 1)) * 100));
-    const avgRt = rts.length ? Math.round(rts.reduce((a,b)=>a+b,0)/rts.length) + "ms" : "-";
-    document.getElementById('r-score').textContent = score;
-    document.getElementById('r-hits').textContent = hits + "/" + nTargets;
-    document.getElementById('r-miss').textContent = misses;
-    document.getElementById('r-fa').textContent = fa;
-    document.getElementById('r-rt').textContent = avgRt;
-    document.getElementById('r-grade').textContent = score > 85 ? "מצוין" : score > 70 ? "טוב מאוד" : score > 50 ? "בינוני" : "דרוש שיפור";
+function showResults(){
+  openOv('ovres');
+  const total=nT+nN;
+  const hr=nT>0?hits/nT:0, fr=nN>0?fa/nN:0;
+  const score=Math.max(0,Math.min(100,Math.round((hr-fr)*100)));
+  const avgRt=rts.length?Math.round(rts.reduce((a,b)=>a+b,0)/rts.length):null;
+  let grade,gc;
+  if(score>=90){grade='מצוין';gc='#22c55e';}
+  else if(score>=80){grade='טוב מאוד';gc='#86efac';}
+  else if(score>=70){grade='טוב';gc='#fbbf24';}
+  else if(score>=55){grade='ממוצע';gc='#fb923c';}
+  else{grade='דורש שיפור';gc='#ef4444';}
+  setEl('rscore',score,gc); setEl('rgrade',grade,gc);
+  document.getElementById('rhits').textContent=hits+'/'+nT;
+  document.getElementById('rmiss').textContent=misses;
+  document.getElementById('rfa').textContent=fa;
+  document.getElementById('rtotal').textContent=total;
+  document.getElementById('rrt').textContent=avgRt?avgRt+'ms':'—';
+}
+
+function setEl(id,txt,c){const e=document.getElementById(id);e.textContent=txt;if(c)e.style.color=c;}
+
+function svgp(s,c){
+  switch(s){
+    case 'circle':   return `<circle cx="80" cy="80" r="72" fill="${c}"/>`;
+    case 'square':   return `<rect x="7" y="7" width="146" height="146" rx="12" fill="${c}"/>`;
+    case 'triangle': return `<polygon points="80,7 155,150 5,150" fill="${c}"/>`;
+    case 'diamond':  return `<polygon points="80,5 155,80 80,155 5,80" fill="${c}"/>`;
+    case 'ellipse':  return `<ellipse cx="80" cy="80" rx="72" ry="54" fill="${c}"/>`;
+    default: return '';
+  }
+}
+function renderShape(s,c){
+  document.getElementById('stimwrap').innerHTML=`<svg viewBox="0 0 160 160" style="width:100%;height:100%;display:block;">${svgp(s,c)}</svg>`;
+}
+function renderFix(){document.getElementById('stimwrap').innerHTML='<div class="fix">+</div>';}
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function flash(c,a){
+  const el=document.getElementById('flash');
+  el.style.background=c; el.style.opacity=a;
+  clearTimeout(el._t); el._t=setTimeout(()=>{el.style.opacity=0;},120);
 }
 </script>
 </body>
