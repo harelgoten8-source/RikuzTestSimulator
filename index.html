@@ -15,106 +15,150 @@
 html{scroll-behavior:smooth}
 body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;direction:rtl;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
 
-/* ── HEADER ── */
-header{position:sticky;top:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,5vw,64px);background:rgba(5,12,24,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border2)}
-.logo{font-size:1.2rem;font-weight:800;color:var(--ab);letter-spacing:-.02em}
+/* HEADER */
+header{position:sticky;top:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,5vw,64px);background:rgba(5,12,24,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border2)}
+.logo{font-size:1.2rem;font-weight:800;color:var(--ab);letter-spacing:-.02em;text-decoration:none}
 .logo span{font-size:.78rem;font-weight:400;color:var(--muted);margin-right:8px}
-nav{display:flex;align-items:center;gap:22px}
-nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .15s}
+nav{display:flex;align-items:center;gap:18px}
+nav a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;transition:color .15s}
 nav a:hover{color:var(--text)}
-.ncta{background:var(--accent)!important;color:#fff!important;padding:7px 18px;border-radius:7px;font-weight:600!important}
+.ncta{background:var(--accent)!important;color:#fff!important;padding:7px 15px;border-radius:7px;font-weight:600!important}
 .ncta:hover{background:#2563eb!important;color:#fff!important}
-@media(max-width:460px){.nhide{display:none}}
+@media(max-width:560px){.nhide{display:none}}
 
-/* ── BUTTONS ── */
-.btn-p{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .12s,transform .1s;touch-action:manipulation}
+/* BUTTONS */
+.btn-p{display:inline-flex;align-items:center;background:var(--accent);color:#fff;border:none;padding:13px 30px;border-radius:10px;font-size:.98rem;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .12s,transform .1s;touch-action:manipulation}
 .btn-p:hover{background:#2563eb}.btn-p:active{transform:scale(.97)}
-.btn-g{display:inline-flex;align-items:center;background:transparent;color:var(--text);border:1.5px solid var(--border2);padding:14px 28px;border-radius:10px;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:none;transition:border-color .12s,color .12s}
+.btn-g{display:inline-flex;align-items:center;background:transparent;color:var(--text);border:1.5px solid var(--border2);padding:13px 26px;border-radius:10px;font-size:.98rem;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:none;transition:border-color .12s,color .12s}
 .btn-g:hover{border-color:var(--accent);color:var(--ab)}
 
-/* ── SECTION BASE ── */
+/* SECTION BASE */
 section{padding:clamp(56px,9vw,100px) clamp(16px,5vw,80px)}
 .slbl{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ab);font-weight:600;margin-bottom:12px}
 .stitle{font-size:clamp(1.8rem,4vw,2.75rem);font-weight:800;line-height:1.18;letter-spacing:-.02em;margin-bottom:14px}
 .ssub{font-size:1rem;color:var(--muted);line-height:1.75;max-width:600px}
 
-/* ── HERO ── */
+/* HERO */
 #hero{min-height:calc(100dvh - 58px);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:60px clamp(16px,5vw,80px)}
 .hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.045) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent)}
-.hglow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.055) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.hinner{position:relative;max-width:680px}
-.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:var(--ab);padding:6px 16px;border-radius:40px;font-size:.8rem;font-weight:600;letter-spacing:.04em;margin-bottom:22px}
-.bdot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:blink 2.2s infinite;display:inline-block}
+.hglow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.055),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hinner{position:relative;max-width:660px}
+.hbadge{display:inline-flex;align-items:center;direction:ltr;gap:10px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:var(--ab);padding:6px 16px;border-radius:40px;font-size:.8rem;font-weight:600;letter-spacing:.04em;margin-bottom:22px}
+.bdot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2.2s infinite;display:inline-block;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .htitle{font-size:clamp(2.3rem,6vw,4rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:18px}
 .htitle .hi{color:var(--ab)}
-.hdesc{font-size:1.08rem;color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto 32px}
-.hctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:46px}
-.hstats{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;align-items:center}
-.hs{text-align:center}.hsn{font-size:1.85rem;font-weight:800}.hsl{font-size:.73rem;color:var(--muted);margin-top:2px}
-.hsep{width:1px;height:40px;background:var(--border2);align-self:center}
+.hdesc{font-size:1.05rem;color:var(--muted);line-height:1.75;max-width:520px;margin:0 auto 32px}
+.hctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-/* ── WHY ── */
+/* WHY */
 #why{background:var(--bg2)}
 .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:44px}
 .wcard{background:var(--surface);border:1.5px solid var(--border2);border-radius:16px;padding:26px}
-.wcicon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px;background:var(--adim)}
+.wcicon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:16px;background:var(--adim)}
 .wctitle{font-size:1rem;font-weight:700;margin-bottom:9px}
 .wcbody{font-size:.875rem;color:var(--muted);line-height:1.72}
 
-/* ── HOW ── */
+/* HOW */
 #how{background:var(--bg)}
-.howin{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start;max-width:980px;margin:0 auto}
-@media(max-width:700px){.howin{grid-template-columns:1fr;gap:32px}}
-.steps{margin-top:32px;display:flex;flex-direction:column;gap:22px}
-.step{display:flex;gap:16px;align-items:flex-start}
+.howin{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:start;max-width:980px;margin:0 auto}
+@media(max-width:700px){.howin{grid-template-columns:1fr;gap:30px}}
+.steps{margin-top:32px;display:flex;flex-direction:column;gap:20px}
+.step{display:flex;gap:15px;align-items:flex-start}
 .stepn{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--adim);border:1.5px solid rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--ab)}
-.stept{font-weight:700;font-size:.96rem;margin-bottom:4px}
-.stepd{font-size:.86rem;color:var(--muted);line-height:1.62}
+.stept{font-weight:700;font-size:.95rem;margin-bottom:4px}
+.stepd{font-size:.85rem;color:var(--muted);line-height:1.62}
 .stepd strong{color:var(--green)}
-.shdemo{background:var(--surface);border:1.5px solid var(--border2);border-radius:18px;padding:26px}
-.sdtitle{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;text-align:center}
+.shdemo{background:var(--surface);border:1.5px solid var(--border2);border-radius:18px;padding:24px;position:sticky;top:76px}
+.sdtitle{font-size:.71rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;text-align:center}
 .sdgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.sditem{display:flex;flex-direction:column;align-items:center;gap:7px}
-.sdsvg{width:52px;height:52px}
-.sdtag{font-size:.67rem;font-weight:700;padding:2px 9px;border-radius:20px}
+.sditem{display:flex;flex-direction:column;align-items:center;gap:6px}
+.sdsvg{width:50px;height:50px}
+.sdtag{font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:20px}
 .sdhit{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.28)}
 .sdmiss{background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.18)}
-.sdlbl{font-size:.65rem;color:var(--muted);text-align:center;line-height:1.3}
+.sdlbl{font-size:.63rem;color:var(--muted);text-align:center;line-height:1.3}
 
-/* ── TEST ── */
-#test{background:var(--bg2)}
+/* ABOUT */
+#about{background:var(--bg2)}
+.abwrap{max-width:700px;margin:0 auto}
+.abroles{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;margin-bottom:28px}
+.abtag{display:inline-flex;align-items:center;background:var(--adim);border:1px solid rgba(59,130,246,.2);color:var(--ab);padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600}
+.abdiv{height:1px;background:var(--border2);margin-bottom:26px}
+.abp{font-size:.95rem;color:var(--muted);line-height:1.8;margin-bottom:16px}
+.abbuilt{display:flex;gap:12px;align-items:flex-start;background:var(--adim);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:14px 16px;margin-top:8px;font-size:.88rem;color:var(--ab);line-height:1.5}
+
+/* TEST */
+#test{background:var(--bg)}
 .twrap{max-width:520px;margin:0 auto}
 .tcard{background:var(--surface);border:1.5px solid var(--border2);border-radius:20px;padding:30px;margin-top:28px}
 .tglbl{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;margin-top:18px}
 .tglbl:first-child{margin-top:0}
-.tgrow{display:flex;gap:7px;margin-bottom:4px}
-.tbtn{flex:1;background:var(--surface2);border:1.5px solid var(--border);color:var(--muted);padding:11px 4px;border-radius:8px;cursor:pointer;font-size:.86rem;font-weight:600;font-family:inherit;transition:all .12s;touch-action:manipulation}
+.tgrow{display:flex;gap:6px;margin-bottom:2px}
+.tbtn{flex:1;background:var(--surface2);border:1.5px solid var(--border);color:var(--muted);padding:10px 2px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;font-family:inherit;transition:all .12s;touch-action:manipulation}
 .tbtn:hover{border-color:var(--accent);color:var(--text)}
 .tbtn.sel{border-color:var(--accent);background:rgba(59,130,246,.1);color:var(--ab)}
-.tdiv{height:1px;background:var(--border);margin:22px 0}
-.tipsbox{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:22px}
-.tipstitle{font-size:.73rem;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase}
-.tip{display:flex;gap:9px;font-size:.83rem;color:var(--muted);padding:3px 0;line-height:1.5}
+.tdiv{height:1px;background:var(--border);margin:20px 0}
+.tipsbox{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 16px;margin-bottom:20px}
+.tipstitle{font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:9px;letter-spacing:.06em;text-transform:uppercase}
+.tip{display:flex;gap:9px;font-size:.82rem;color:var(--muted);padding:3px 0;line-height:1.5}
 .tipa{color:var(--ab);flex-shrink:0}
-.startbtn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:16px;font-size:1.08rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s,transform .1s;touch-action:manipulation}
+.startbtn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:15px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s,transform .1s;touch-action:manipulation}
 .startbtn:hover{background:#2563eb}.startbtn:active{transform:scale(.98)}
 
-/* ── FOOTER ── */
-footer{background:var(--bg);border-top:1px solid var(--border);text-align:center;padding:26px clamp(16px,5vw,80px);font-size:.79rem;color:var(--muted);line-height:1.8}
+/* FEEDBACK */
+#feedback{background:var(--bg2)}
+.fbin{max-width:660px;margin:0 auto}
+.fbsum{display:flex;align-items:center;gap:20px;background:var(--surface);border:1.5px solid var(--border2);border-radius:16px;padding:20px 24px;margin:28px 0 18px}
+.fbavg{font-size:3.2rem;font-weight:900;color:var(--yellow);line-height:1;min-width:64px;text-align:center}
+.fbsinfo{display:flex;flex-direction:column;gap:4px}
+.fbstars{font-size:1.3rem;letter-spacing:3px;color:var(--yellow)}
+.fbcount{font-size:.8rem;color:var(--muted)}
+.fform{background:var(--surface);border:1.5px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:18px}
+.fftitle{font-size:.74rem;font-weight:700;color:var(--muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.08em}
+.starrow{display:flex;gap:6px;margin-bottom:14px;direction:ltr}
+.star{font-size:2rem;cursor:pointer;color:var(--dim);transition:color .1s;line-height:1;user-select:none;-webkit-user-select:none}
+.star.active{color:var(--yellow)}
+.fftextarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-family:inherit;font-size:.9rem;resize:vertical;min-height:76px;max-height:160px;direction:rtl;margin-bottom:12px;transition:border-color .15s;outline:none}
+.fftextarea:focus{border-color:var(--accent)}
+.fftextarea::placeholder{color:var(--muted)}
+.ffrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ffsubmit{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:11px 26px;font-size:.93rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s}
+.ffsubmit:hover{background:#2563eb}.ffsubmit:disabled{opacity:.5;cursor:not-allowed}
+.ffsuccess{display:none;align-items:center;gap:6px;color:var(--green);font-size:.88rem;font-weight:600}
+.ffsuccess.show{display:flex}
+.rlist{display:flex;flex-direction:column;gap:10px}
+.ritem{background:var(--surface);border:1.5px solid var(--border2);border-radius:12px;padding:16px 18px}
+.rihead{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.ristars{color:var(--yellow);font-size:.95rem;letter-spacing:2px}
+.ridate{font-size:.72rem;color:var(--dim)}
+.ritext{font-size:.88rem;color:var(--muted);line-height:1.65}
+.rianon{font-size:.72rem;color:var(--dim);margin-top:6px}
+.rload,.rnone{color:var(--muted);font-size:.88rem;text-align:center;padding:20px}
 
-/* ══ OVERLAYS ══ */
+/* CONTACT */
+#contact{background:var(--bg)}
+.ctwrap{max-width:520px;margin:0 auto}
+.ctcard{background:var(--surface);border:1.5px solid var(--border2);border-radius:18px;padding:28px;margin-top:28px}
+.ctinput,.cttextarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);padding:11px 14px;border-radius:10px;font-family:inherit;font-size:.9rem;direction:rtl;margin-bottom:12px;outline:none;transition:border-color .15s}
+.ctinput:focus,.cttextarea:focus{border-color:var(--accent)}
+.ctinput::placeholder,.cttextarea::placeholder{color:var(--muted)}
+.cttextarea{resize:vertical;min-height:100px;max-height:200px}
+.ctbtn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .12s}
+.ctbtn:hover{background:#2563eb}
+.ctsucc{display:none;font-size:.85rem;color:var(--muted);margin-top:12px;text-align:center;line-height:1.6}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:26px clamp(16px,5vw,80px);font-size:.79rem;color:var(--muted);line-height:1.8}
+
+/* OVERLAYS */
 .overlay{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);flex-direction:column;align-items:center;justify-content:center}
 .overlay.active{display:flex}
-
-/* Countdown */
 #ovcd{gap:18px}
 .cdsub{color:var(--muted);font-size:.9rem}
 .cdn{font-size:clamp(7rem,25vw,12rem);font-weight:900;color:var(--ab);line-height:1;animation:cdpop 1s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes cdpop{0%{transform:scale(1.7);opacity:0}25%{transform:scale(.92);opacity:1}80%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}
-
-/* Game */
-#ovgame{background:var(--bg);justify-content:flex-start;padding:0}
+#ovgame{justify-content:flex-start;padding:0}
 .hud{width:100%;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--border)}
 .hudtime{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;font-family:'Courier New',monospace;color:var(--ab)}
 .hudscores{display:flex;gap:18px}
@@ -130,10 +174,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);text-align:center
 .pressbtn{width:100%;max-width:320px;background:var(--surface2);border:1.5px solid var(--border2);color:var(--muted);padding:14px;border-radius:10px;font-size:.98rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .1s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .pressbtn:active{transform:scale(.96);background:rgba(59,130,246,.07);border-color:var(--accent)}
 .ghint{font-size:.69rem;color:var(--dim)}
-
 #flash{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:999;transition:opacity .07s}
-
-/* Results */
 #ovres{overflow-y:auto;padding:32px 20px;gap:0}
 .restitle{font-size:1.3rem;font-weight:700;margin-bottom:20px}
 .scorecard{background:var(--surface);border:2px solid var(--border2);border-radius:18px;padding:22px 48px;margin-bottom:16px;width:100%;max-width:400px;text-align:center}
@@ -155,97 +196,75 @@ footer{background:var(--bg);border-top:1px solid var(--border);text-align:center
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
 <header>
-  <div class="logo">TrainCPT <span>סימולטור קשב וריכוז</span></div>
+  <a class="logo" href="#">TrainCPT <span>סימולטור קשב לצו ראשון</span></a>
   <nav>
     <a href="#why" class="nhide">למה זה חשוב</a>
     <a href="#how" class="nhide">מדריך</a>
+    <a href="#about" class="nhide">עלינו</a>
+    <a href="#contact" class="nhide">צור קשר</a>
     <a href="#test" class="ncta">התחל מבחן</a>
   </nav>
 </header>
 
-<!-- ═══ HERO ═══ -->
 <section id="hero">
-  <div class="hgrid"></div>
-  <div class="hglow"></div>
+  <div class="hgrid"></div><div class="hglow"></div>
   <div class="hinner">
-    <div class="hbadge"><span class="bdot"></span>מותאם לצו ראשון 2025</div>
+    <div class="hbadge">מותאם לצו ראשון 2025 <span class="bdot"></span></div>
     <h1 class="htitle">תתכונן למבחן<br><span class="hi">הקשב של הצו הראשון</span></h1>
-    <p class="hdesc">סימולטור מדויק למבחן ה-CPT — תרגל מהירות תגובה, ריכוז ועמידות תחת לחץ. הכלי שישפר את שיבוצך.</p>
+    <p class="hdesc">סימולטור CPT עם קצב אקראי, רצפי לחץ ומגוון צורות מבלבלות — הכלי שלא היה קיים עד שבניתי אותו.</p>
     <div class="hctas">
       <a href="#test" class="btn-p">התחל מבחן ←</a>
       <a href="#how" class="btn-g">איך זה עובד?</a>
     </div>
-    <div class="hstats">
-      <div class="hs"><div class="hsn">5</div><div class="hsl">צורות + אליפסה מבלבלת</div></div>
-      <div class="hsep"></div>
-      <div class="hs"><div class="hsn">~200ms</div><div class="hsl">מהירות גירוי</div></div>
-      <div class="hsep"></div>
-      <div class="hs"><div class="hsn">15 דק׳</div><div class="hsl">מקסימום תרגול</div></div>
-    </div>
   </div>
 </section>
 
-<!-- ═══ WHY ═══ -->
 <section id="why">
   <div class="slbl">למה זה חשוב</div>
-  <h2 class="stitle">מבחן ה-CPT קובע את השיבוץ שלך</h2>
-  <p class="ssub">מבחן הקשב הוא אחד ממבחני הפרופיל הקוגניטיביים המרכזיים בצו הראשון — משפיע ישירות על כשירות לתפקידים דורשניים ויחידות מובחרות.</p>
+  <h2 class="stitle">מבחן ה-CPT בצו הראשון</h2>
+  <p class="ssub">מבחן הקשב הוא חלק ממכלול הפרופיל הקוגניטיבי שנבדק בצו הראשון — כמו כל מבחן, אפשר ורצוי להתכונן.</p>
   <div class="wgrid">
     <div class="wcard">
       <div class="wcicon">🧠</div>
       <div class="wctitle">מה בודק המבחן?</div>
-      <div class="wcbody">מבחן CPT (Continuous Performance Task) מודד קשב ממושך, מהירות תגובה ויכולת עיכוב — כמה מהר אתה מגיב לגירוי הנכון, ומתעלם מהשאר, לאורך זמן.</div>
+      <div class="wcbody">מבחן CPT (Continuous Performance Task) הוא כלי נוירופסיכולוגי מוכר שמודד קשב ממושך, מהירות תגובה ויכולת עיכוב — כמה מהר אתה מגיב לגירוי הנכון ומתעלם מהשאר לאורך זמן.</div>
     </div>
     <div class="wcard">
-      <div class="wcicon">🎯</div>
-      <div class="wctitle">למה זה משנה לשיבוץ?</div>
-      <div class="wcbody">ציון גבוה משפיע על כשירות לתפקידים קוגניטיביים — לוחמה, אינטליגנציה, יחידות טכנולוגיות. ביצועי הקשב נלקחים ברצינות בהליך הסיווג.</div>
+      <div class="wcicon">📋</div>
+      <div class="wctitle">איך זה נמדד בצבא?</div>
+      <div class="wcbody">מבחני הקשב הם חלק ממכלול גדול יותר של הערכות קוגניטיביות. המידע הרשמי על שיטת הניקוד ומשמעותו לשיבוצים ספציפיים אינו ציבורי — מה שבטוח הוא שביצוע טוב עדיף על ביצוע גרוע.</div>
     </div>
     <div class="wcard">
       <div class="wcicon">📈</div>
       <div class="wctitle">אפשר להשתפר?</div>
-      <div class="wcbody">בהחלט. מחקרים מראים שתרגול קבוע של מבחני קשב משפר מהירות תגובה ודיוק. השפעה ניכרת מגיעה אחרי מספר שבועות של תרגול יומי קצר.</div>
+      <div class="wcbody">כן. מחקרים מראים שתרגול מבחני קשב משפר מהירות תגובה ודיוק. הסימולטור הזה נועד בדיוק לזה — להרגיל אותך לקצב, לצורות ולרמת הלחץ של המבחן האמיתי.</div>
     </div>
   </div>
 </section>
 
-<!-- ═══ HOW ═══ -->
 <section id="how">
   <div class="howin">
     <div>
       <div class="slbl">מדריך המבחן</div>
       <h2 class="stitle">איך זה עובד?</h2>
       <div class="steps">
-        <div class="step">
-          <div class="stepn">1</div>
-          <div>
-            <div class="stept">צורות מופיעות על המסך</div>
-            <div class="stepd">עיגולים, ריבועים, משולשים, יהלומים ואליפסות בצבעים שונים — בקצב אקראי. לפעמים ריצוף מהיר, לפעמים הפסקות ארוכות.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="stepn">2</div>
-          <div>
-            <div class="stept">לחץ רק לעיגול ירוק מושלם</div>
-            <div class="stepd">הגירוי הנכון הוא <strong>עיגול מושלם בצבע ירוק בלבד</strong>. אליפסה ירוקה, עיגול אדום, ריבוע ירוק — לא נחשבים. ההבדל קטן, קריטי.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="stepn">3</div>
-          <div>
-            <div class="stept">חלון תגובה של ~550ms</div>
-            <div class="stepd">הצורה מוצגת כ-200ms. יש עוד ~380ms לאחר ההיעלמות. הגמישות הזו קיימת גם במבחן האמיתי — אל תדאג אם לחצת חצי שנייה מאוחר.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="stepn">4</div>
-          <div>
-            <div class="stept">ציון = דיוק + עיכוב</div>
-            <div class="stepd">הציון מבוסס על Hits פחות False Alarms. לחיצות מיותרות <strong>מורידות ציון</strong> — עדיף לפספס עיגול ירוק מאשר ללחוץ על הצורה הלא נכונה.</div>
-          </div>
-        </div>
+        <div class="step"><div class="stepn">1</div><div>
+          <div class="stept">צורות ומגוון צבעים</div>
+          <div class="stepd">עיגולים, ריבועים, משולשים, יהלומים, אליפסות, מחומשים ומשושים — בצבעים שונים, בקצב אקראי לחלוטין.</div>
+        </div></div>
+        <div class="step"><div class="stepn">2</div><div>
+          <div class="stept">לחץ רק לעיגול ירוק מושלם</div>
+          <div class="stepd"><strong>עיגול + ירוק = לחץ</strong>. אליפסה ירוקה? לא. עיגול אדום? לא. ריבוע ירוק? לא. רק עיגול עגול לחלוטין בצבע ירוק.</div>
+        </div></div>
+        <div class="step"><div class="stepn">3</div><div>
+          <div class="stept">רצפי לחץ אקראיים</div>
+          <div class="stepd">לפעמים רצף של 3–5 צורות מהירות ברצף. לפעמים שקט של שניים. הקצב משתנה בכוונה — כמו המבחן האמיתי.</div>
+        </div></div>
+        <div class="step"><div class="stepn">4</div><div>
+          <div class="stept">חלון תגובה ~550ms</div>
+          <div class="stepd">הצורה מוצגת ~200ms. יש עוד ~380ms אחרי שהיא נעלמת. לחיצות שגויות <strong>מורידות ציון</strong> — עדיף לפספס מאשר לנחש.</div>
+        </div></div>
       </div>
     </div>
     <div class="shdemo">
@@ -255,7 +274,21 @@ footer{background:var(--bg);border-top:1px solid var(--border);text-align:center
   </div>
 </section>
 
-<!-- ═══ TEST ═══ -->
+<section id="about">
+  <div class="abwrap">
+    <div class="slbl">מי עומד מאחורי הפרויקט</div>
+    <h2 class="stitle">הראל יחזקאל</h2>
+    <div class="abroles">
+      <span class="abtag">פיתוח ועיצוב עצמאי</span>
+    </div>
+    <div class="abdiv"></div>
+    <p class="abp">כשהתכוננתי לצו הראשון שלי, ניסיתי למצוא דרך לתרגל את מבחן הקשב לפני שאגיע לשם. חיפשתי בכל מקום — ולא מצאתי כלום. אף סימולטור, אף אתר, אף כלי שנותן לך להרגיש מה זה בפועל.</p>
+    <p class="abp">אז החלטתי לבנות אחד בעצמי. לא בגלל שאני מפתח מקצועי — אלא כי הייתי צריך את הכלי הזה, ורציתי שגם אחרים יוכלו ליהנות ממנו. TrainCPT נבנה מאפס: הקוד, העיצוב, הלוגיקה, הטיימינג האקראי, הצורות המבלבלות. הכל.</p>
+    <p class="abp">אם זה עוזר לך — אני שמח. השאר פידבק למטה ותגיד לי איך הלך 🙏</p>
+    <div class="abbuilt"><span>🛠️</span><span>כל הפרויקט נבנה עצמאית מאפס — קוד, עיצוב, לוגיקה וחווית המשתמש</span></div>
+  </div>
+</section>
+
 <section id="test">
   <div class="twrap">
     <div class="slbl">המבחן</div>
@@ -266,26 +299,63 @@ footer{background:var(--bg);border-top:1px solid var(--border);text-align:center
       <div class="tipsbox">
         <div class="tipstitle">💡 טיפים לפני התחלה</div>
         <div class="tip"><span class="tipa">→</span>שב זקוף, הפסד את הטלפון — מיקוד מלא</div>
-        <div class="tip"><span class="tipa">→</span>אל תנחש — לחץ רק כשאתה בטוח שזה עיגול עגול ירוק</div>
-        <div class="tip"><span class="tipa">→</span>הקצב אקראי בכוונה — אל תתקבע על מחזוריות</div>
-        <div class="tip"><span class="tipa">→</span>אליפסה ירוקה היא מלכודת — ודא שהצורה עגולה לחלוטין</div>
+        <div class="tip"><span class="tipa">→</span>לחץ רק כשאתה בטוח — עיגול עגול ירוק בלבד</div>
+        <div class="tip"><span class="tipa">→</span>אליפסה ירוקה = מלכודת. ודא שהצורה עגולה לחלוטין</div>
+        <div class="tip"><span class="tipa">→</span>הקצב משתנה — לפעמים רצף מהיר, לפעמים שקט ארוך</div>
       </div>
       <button class="startbtn" id="startbtn">התחל מבחן ←</button>
     </div>
   </div>
 </section>
 
+<section id="feedback">
+  <div class="fbin">
+    <div class="slbl">ביקורות</div>
+    <h2 class="stitle">כמה עזר לך?</h2>
+    <div class="fbsum">
+      <div class="fbavg" id="fbavg">—</div>
+      <div class="fbsinfo">
+        <div class="fbstars" id="fbstars">☆☆☆☆☆</div>
+        <div class="fbcount" id="fbcount">טוען...</div>
+      </div>
+    </div>
+    <div class="fform">
+      <div class="fftitle">השאר ביקורת</div>
+      <div class="starrow" id="starrow"></div>
+      <textarea class="fftextarea" id="reviewtext" placeholder="ספר לנו כיצד TrainCPT עזר לך... (אופציונלי)"></textarea>
+      <div class="ffrow">
+        <button class="ffsubmit" id="submitbtn">שלח ביקורת</button>
+        <div class="ffsuccess" id="ffsuccess">✓ תודה על הביקורת!</div>
+      </div>
+    </div>
+    <div class="rlist" id="rlist"><div class="rload">טוען ביקורות...</div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="ctwrap">
+    <div class="slbl">יצירת קשר</div>
+    <h2 class="stitle">Contact Us</h2>
+    <p class="ssub">שאלות, הצעות, או פידבק ישיר? נשמח לשמוע.</p>
+    <div class="ctcard">
+      <input class="ctinput" id="ctname" type="text" placeholder="שמך (אופציונלי)">
+      <textarea class="cttextarea" id="ctmsg" placeholder="הודעתך..."></textarea>
+      <button class="ctbtn" id="ctbtn">שלח הודעה ←</button>
+      <div class="ctsucc" id="ctsucc">✓ בדקות הקרובות יפתח אצלך חלון מייל עם ההודעה מוכנה — רק לחץ שלח.</div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div>TrainCPT — סימולטור חינמי ובלתי רשמי למבחן קשב וריכוז</div>
+  <div>TrainCPT — סימולטור חינמי ובלתי רשמי למבחן קשב וריכוז | הראל יחזקאל 2025</div>
   <div>אין שיוך לצבא ההגנה לישראל, לגיוס, לצו ראשון, או לכל גוף ממשלתי. הכלי נועד לצורכי תרגול בלבד.</div>
 </footer>
 
-<!-- ════ OVERLAYS ════ -->
+<!-- OVERLAYS -->
 <div id="ovcd" class="overlay">
   <div class="cdsub">המבחן מתחיל בעוד</div>
   <div class="cdn" id="cdn">3</div>
 </div>
-
 <div id="ovgame" class="overlay">
   <div class="hud">
     <div class="hudtime" id="hudtime">00:00</div>
@@ -294,16 +364,13 @@ footer{background:var(--bg);border-top:1px solid var(--border);text-align:center
       <span class="hfa">✗ <span class="hbadge" id="hudfa">0</span></span>
     </div>
   </div>
-  <div class="garea">
-    <div id="stimwrap"><div class="fix">+</div></div>
-  </div>
+  <div class="garea"><div id="stimwrap"><div class="fix">+</div></div></div>
   <div class="pbar"><div class="pfill" id="pfill" style="width:100%"></div></div>
   <div class="gfoot">
     <button class="pressbtn" id="pressbtn">לחץ כאן &nbsp;/&nbsp; SPACE</button>
     <div class="ghint">לחץ רק כשמופיע עיגול ירוק מושלם</div>
   </div>
 </div>
-
 <div id="ovres" class="overlay">
   <div class="restitle">תוצאות המבחן</div>
   <div class="scorecard">
@@ -316,48 +383,59 @@ footer{background:var(--bg);border-top:1px solid var(--border);text-align:center
     <div class="stat"><div class="sv cr" id="rmiss">0</div><div class="sl">פספוסים<br>Misses</div></div>
     <div class="stat"><div class="sv cr" id="rfa">0</div><div class="sl">לחיצות שגויות<br>False Alarms</div></div>
     <div class="stat"><div class="sv cb" id="rrt">—</div><div class="sl">זמן תגובה ממוצע</div></div>
-    <div class="stat wide"><div class="sv cy" id="rtotal">0</div><div class="sl">סה"כ גירויים שהוצגו</div></div>
+    <div class="stat wide"><div class="sv cy" id="rtotal">0</div><div class="sl">סה"כ גירויים</div></div>
   </div>
   <div class="resbtns">
     <button class="btnretry" id="retrybtn">נסה שוב</button>
     <button class="btnback" id="backbtn">חזור לאתר</button>
   </div>
 </div>
-
 <div id="flash"></div>
 
 <script>
 // ── CONFIG ──
-const SHAPES=['circle','square','triangle','diamond','ellipse'];
+const SHAPES=['circle','square','triangle','diamond','ellipse','pentagon','hexagon'];
 const COLORS=[
-  {id:'green', h:'#22c55e'},{id:'red',    h:'#ef4444'},
-  {id:'blue',  h:'#3b82f6'},{id:'yellow', h:'#eab308'},
-  {id:'orange',h:'#f97316'},{id:'purple', h:'#a855f7'},
+  {id:'green', h:'#22c55e'},
+  {id:'red',   h:'#ef4444'},
+  {id:'blue',  h:'#3b82f6'},
+  {id:'yellow',h:'#eab308'},
+  {id:'black', h:'#6b7280'},
 ];
-const T_SHAPE='circle', T_COLOR='green', T_RATE=0.27;
-const GRACE=380; // ms response window after stim disappears
+const T_SHAPE='circle', T_COLOR='green', T_RATE=0.25, GRACE=380;
+const DEST=atob('aGFyZWxnb3RlbjhAZ21haWwuY29t');
 
-function rDur(){ return 150+Math.random()*120; } // 150-270ms
+let burstLeft=0;
+function rDur(){ return Math.random()<.28 ? 90+Math.random()*80 : 165+Math.random()*110; }
 function rISI(){
+  if(burstLeft>0){ burstLeft--; return 60+Math.random()*120; }
   const r=Math.random();
-  if(r<.18) return 120+Math.random()*160;   // rapid burst: 120-280ms
-  if(r<.42) return 400+Math.random()*300;   // fast: 400-700ms
-  return 750+Math.random()*1350;            // relaxed: 750-2100ms
+  if(r<.15){ burstLeft=1+Math.floor(Math.random()*4); return 55+Math.random()*100; }
+  if(r<.38) return 260+Math.random()*440;
+  if(r<.68) return 750+Math.random()*900;
+  return 1650+Math.random()*1400;
 }
 
-// ── STATE ──
+// ── GAME STATE ──
 let selMin=5, gameActive=false, timeLeft=0, totalSec=0;
 let clockId=null, timers=[];
 let phase='off';
 let ts={isTarget:false,responded:false,onset:0};
 let hits=0,misses=0,fa=0,nT=0,nN=0,rts=[];
 
+// ── FEEDBACK STATE ──
+let selRating=0;
+const RKEY='traincpt-v3-reviews';
+const HST=typeof window.storage!=='undefined';
+
 // ── INIT ──
 (function(){
-  buildGrid(); buildDemo();
+  buildGrid(); buildDemo(); initStars(); loadAndRenderReviews();
   document.getElementById('startbtn').addEventListener('click',startCD);
   document.getElementById('retrybtn').addEventListener('click',()=>{closeOv('ovres');startCD();});
   document.getElementById('backbtn').addEventListener('click',()=>closeOv('ovres'));
+  document.getElementById('submitbtn').addEventListener('click',submitReview);
+  document.getElementById('ctbtn').addEventListener('click',sendContact);
   const pb=document.getElementById('pressbtn');
   pb.addEventListener('touchstart',e=>{e.preventDefault();press();},{passive:false});
   pb.addEventListener('click',press);
@@ -365,25 +443,16 @@ let hits=0,misses=0,fa=0,nT=0,nN=0,rts=[];
 })();
 
 function buildGrid(){
-  const groups=[
-    {lbl:'קצר — מבחן מהיר',a:1,b:5},
-    {lbl:'בינוני — תרגול מוצלח',a:6,b:10},
-    {lbl:'מלא — כמו הצו הראשון',a:11,b:15},
-  ];
+  const G=[{l:'קצר',a:1,b:5},{l:'בינוני',a:6,b:10},{l:'מלא',a:11,b:15}];
   const c=document.getElementById('timegrid');
-  groups.forEach(g=>{
-    const d=document.createElement('div');
-    d.className='tglbl'; d.textContent=g.lbl; c.appendChild(d);
-    const row=document.createElement('div');
-    row.className='tgrow';
+  G.forEach(g=>{
+    const d=document.createElement('div'); d.className='tglbl'; d.textContent=g.l; c.appendChild(d);
+    const row=document.createElement('div'); row.className='tgrow';
     for(let i=g.a;i<=g.b;i++){
       const b=document.createElement('button');
       b.className='tbtn'+(i===selMin?' sel':'');
       b.textContent=i+"'"; b.dataset.m=i;
-      b.addEventListener('click',()=>{
-        selMin=i;
-        c.querySelectorAll('.tbtn').forEach(el=>el.classList.toggle('sel',+el.dataset.m===i));
-      });
+      b.addEventListener('click',()=>{ selMin=i; c.querySelectorAll('.tbtn').forEach(el=>el.classList.toggle('sel',+el.dataset.m===i)); });
       row.appendChild(b);
     }
     c.appendChild(row);
@@ -391,34 +460,37 @@ function buildGrid(){
 }
 
 function buildDemo(){
-  const demos=[
-    {s:'circle',  c:'#22c55e',lbl:'עיגול ירוק',hit:true},
+  const D=[
+    {s:'circle',  c:'#22c55e',lbl:'עיגול ירוק',  hit:true},
     {s:'ellipse', c:'#22c55e',lbl:'אליפסה ירוקה',hit:false},
-    {s:'circle',  c:'#ef4444',lbl:'עיגול אדום',hit:false},
-    {s:'square',  c:'#3b82f6',lbl:'ריבוע כחול',hit:false},
-    {s:'triangle',c:'#eab308',lbl:'משולש',hit:false},
-    {s:'diamond', c:'#a855f7',lbl:'יהלום',hit:false},
+    {s:'circle',  c:'#ef4444',lbl:'עיגול אדום',  hit:false},
+    {s:'pentagon',c:'#3b82f6',lbl:'מחומש כחול',  hit:false},
+    {s:'hexagon', c:'#eab308',lbl:'משושה צהוב', hit:false},
+    {s:'square',  c:'#6b7280',lbl:'ריבוע כהה',   hit:false},
   ];
   const g=document.getElementById('spdemo');
-  demos.forEach(d=>{
-    g.insertAdjacentHTML('beforeend',`
-      <div class="sditem">
-        <svg class="sdsvg" viewBox="0 0 160 160">${svgp(d.s,d.c)}</svg>
-        <span class="sdtag ${d.hit?'sdhit':'sdmiss'}">${d.hit?'✓ לחץ':'✗ דלג'}</span>
-        <span class="sdlbl">${d.lbl}</span>
-      </div>`);
-  });
+  D.forEach(d=>g.insertAdjacentHTML('beforeend',`
+    <div class="sditem">
+      <svg class="sdsvg" viewBox="0 0 160 160">${svgp(d.s,d.c)}</svg>
+      <span class="sdtag ${d.hit?'sdhit':'sdmiss'}">${d.hit?'✓ לחץ':'✗ דלג'}</span>
+      <span class="sdlbl">${d.lbl}</span>
+    </div>`));
 }
 
-function openOv(id){
-  document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.body.style.overflow='hidden';
+function initStars(){
+  const row=document.getElementById('starrow');
+  for(let n=1;n<=5;n++){
+    const s=document.createElement('span'); s.className='star'; s.textContent='★'; s.dataset.n=n;
+    s.addEventListener('mouseover',()=>hl(n));
+    s.addEventListener('mouseout',()=>hl(selRating));
+    s.addEventListener('click',()=>{ selRating=n; hl(n); });
+    row.appendChild(s);
+  }
 }
-function closeOv(id){
-  document.getElementById(id).classList.remove('active');
-  document.body.style.overflow='';
-}
+function hl(n){ document.querySelectorAll('#starrow .star').forEach((s,i)=>s.classList.toggle('active',i<n)); }
+
+function openOv(id){ document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('active')); document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
+function closeOv(id){ document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
 
 function startCD(){
   openOv('ovcd'); let n=3;
@@ -427,20 +499,20 @@ function startCD(){
     el.textContent=n===0?'קדימה!':n;
     el.style.animation='none'; void el.offsetWidth;
     el.style.animation='cdpop 1s cubic-bezier(.22,1,.36,1) forwards';
-    if(n===0) setTimeout(beginGame,800); else{n--;setTimeout(tick,1000);}
+    if(n===0) setTimeout(beginGame,800); else{ n--; setTimeout(tick,1000); }
   }
   tick();
 }
 
 function beginGame(){
-  hits=misses=fa=nT=nN=0; rts=[]; timers=[]; phase='off';
+  hits=misses=fa=nT=nN=0; rts=[]; timers=[]; phase='off'; burstLeft=0;
   timeLeft=totalSec=selMin*60; gameActive=true;
   document.getElementById('hudh').textContent='0';
   document.getElementById('hudfa').textContent='0';
   document.getElementById('hudtime').textContent=fmt(timeLeft);
   const pf=document.getElementById('pfill');
-  pf.style.transition='none'; pf.style.width='100%';
-  void pf.offsetWidth; pf.style.transition='width 1s linear';
+  pf.style.transition='none'; pf.style.width='100%'; void pf.offsetWidth;
+  pf.style.transition='width 1s linear';
   openOv('ovgame'); renderFix();
   clockId=setInterval(()=>{
     timeLeft--;
@@ -451,16 +523,16 @@ function beginGame(){
   push(setTimeout(runTrial,600));
 }
 
-function push(id){timers.push(id);return id;}
+function push(id){ timers.push(id); return id; }
 
 function runTrial(){
   if(!gameActive) return;
   const isT=Math.random()<T_RATE;
   let sh,col;
-  if(isT){sh=T_SHAPE;col=COLORS.find(c=>c.id===T_COLOR);nT++;}
+  if(isT){ sh=T_SHAPE; col=COLORS.find(c=>c.id===T_COLOR); nT++; }
   else{
     let tries=0;
-    do{sh=SHAPES[Math.floor(Math.random()*SHAPES.length)];col=COLORS[Math.floor(Math.random()*COLORS.length)];}
+    do{ sh=SHAPES[Math.floor(Math.random()*SHAPES.length)]; col=COLORS[Math.floor(Math.random()*COLORS.length)]; }
     while(sh===T_SHAPE&&col.id===T_COLOR&&++tries<20);
     nN++;
   }
@@ -481,32 +553,20 @@ function press(){
   if(phase==='on'||phase==='grace'){
     if(ts.responded) return;
     ts.responded=true;
-    if(ts.isTarget){
-      hits++; rts.push(performance.now()-ts.onset);
-      document.getElementById('hudh').textContent=hits;
-      flash('#22c55e',.13);
-    } else {
-      fa++;
-      document.getElementById('hudfa').textContent=fa;
-      flash('#ef4444',.2);
-    }
-  } else {
-    fa++;
-    document.getElementById('hudfa').textContent=fa;
-    flash('#ef4444',.18);
-  }
+    if(ts.isTarget){ hits++; rts.push(performance.now()-ts.onset); document.getElementById('hudh').textContent=hits; flash('#22c55e',.12); }
+    else{ fa++; document.getElementById('hudfa').textContent=fa; flash('#ef4444',.2); }
+  } else { fa++; document.getElementById('hudfa').textContent=fa; flash('#ef4444',.18); }
 }
 
 function endGame(){
-  gameActive=false; phase='off';
+  gameActive=false; phase='off'; burstLeft=0;
   clearInterval(clockId); timers.forEach(clearTimeout); timers=[];
   renderFix(); setTimeout(showResults,500);
 }
 
 function showResults(){
   openOv('ovres');
-  const total=nT+nN;
-  const hr=nT>0?hits/nT:0, fr=nN>0?fa/nN:0;
+  const total=nT+nN, hr=nT>0?hits/nT:0, fr=nN>0?fa/nN:0;
   const score=Math.max(0,Math.min(100,Math.round((hr-fr)*100)));
   const avgRt=rts.length?Math.round(rts.reduce((a,b)=>a+b,0)/rts.length):null;
   let grade,gc;
@@ -522,8 +582,7 @@ function showResults(){
   document.getElementById('rtotal').textContent=total;
   document.getElementById('rrt').textContent=avgRt?avgRt+'ms':'—';
 }
-
-function setEl(id,txt,c){const e=document.getElementById(id);e.textContent=txt;if(c)e.style.color=c;}
+function setEl(id,txt,c){ const e=document.getElementById(id); e.textContent=txt; if(c) e.style.color=c; }
 
 function svgp(s,c){
   switch(s){
@@ -531,19 +590,73 @@ function svgp(s,c){
     case 'square':   return `<rect x="7" y="7" width="146" height="146" rx="12" fill="${c}"/>`;
     case 'triangle': return `<polygon points="80,7 155,150 5,150" fill="${c}"/>`;
     case 'diamond':  return `<polygon points="80,5 155,80 80,155 5,80" fill="${c}"/>`;
-    case 'ellipse':  return `<ellipse cx="80" cy="80" rx="72" ry="54" fill="${c}"/>`;
+    case 'ellipse':  return `<ellipse cx="80" cy="80" rx="72" ry="52" fill="${c}"/>`;
+    case 'pentagon': return `<polygon points="80,8 148,58 122,138 38,138 12,58" fill="${c}"/>`;
+    case 'hexagon':  return `<polygon points="80,10 141,45 141,115 80,150 19,115 19,45" fill="${c}"/>`;
     default: return '';
   }
 }
-function renderShape(s,c){
-  document.getElementById('stimwrap').innerHTML=`<svg viewBox="0 0 160 160" style="width:100%;height:100%;display:block;">${svgp(s,c)}</svg>`;
+function renderShape(s,c){ document.getElementById('stimwrap').innerHTML=`<svg viewBox="0 0 160 160" style="width:100%;height:100%;display:block;">${svgp(s,c)}</svg>`; }
+function renderFix(){ document.getElementById('stimwrap').innerHTML='<div class="fix">+</div>'; }
+function fmt(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+function flash(c,a){ const el=document.getElementById('flash'); el.style.background=c; el.style.opacity=a; clearTimeout(el._t); el._t=setTimeout(()=>{el.style.opacity=0;},110); }
+function starStr(n,max=5){ return '★'.repeat(n)+'☆'.repeat(max-n); }
+function fmtDate(ts){ const d=new Date(ts); return d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear(); }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── FEEDBACK ──
+async function loadRevs(){
+  if(!HST) return [];
+  try{ const r=await window.storage.get(RKEY,true); return r?JSON.parse(r.value):[]; }catch{ return []; }
 }
-function renderFix(){document.getElementById('stimwrap').innerHTML='<div class="fix">+</div>';}
-function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
-function flash(c,a){
-  const el=document.getElementById('flash');
-  el.style.background=c; el.style.opacity=a;
-  clearTimeout(el._t); el._t=setTimeout(()=>{el.style.opacity=0;},120);
+async function loadAndRenderReviews(){ const rv=await loadRevs(); renderSum(rv); renderList(rv); }
+function renderSum(rv){
+  const ea=document.getElementById('fbavg'), es=document.getElementById('fbstars'), ec=document.getElementById('fbcount');
+  if(!rv.length){ ea.textContent='—'; es.textContent='☆☆☆☆☆'; ec.textContent='אין ביקורות עדיין — היה הראשון!'; return; }
+  const avg=rv.reduce((a,r)=>a+r.rating,0)/rv.length;
+  ea.textContent=avg.toFixed(1); es.textContent=starStr(Math.round(avg));
+  ec.textContent=rv.length+(rv.length===1?' ביקורת':' ביקורות');
+}
+function renderList(rv){
+  const el=document.getElementById('rlist');
+  if(!rv.length){ el.innerHTML='<div class="rnone">אין ביקורות עדיין. השאר את הראשונה!</div>'; return; }
+  el.innerHTML=rv.slice(0,20).map(r=>`
+    <div class="ritem">
+      <div class="rihead"><span class="ristars">${starStr(r.rating)}</span><span class="ridate">${fmtDate(r.ts)}</span></div>
+      ${r.text?`<div class="ritext">${esc(r.text)}</div>`:''}
+      <div class="rianon">משתמש אנונימי</div>
+    </div>`).join('');
+}
+async function submitReview(){
+  if(!selRating){ alert('בחר דירוג כוכבים לפני שליחה'); return; }
+  const text=document.getElementById('reviewtext').value;
+  const btn=document.getElementById('submitbtn');
+  btn.disabled=true; btn.textContent='שולח...';
+  try{
+    if(HST){
+      const rv=await loadRevs();
+      rv.unshift({rating:selRating,text:text.trim(),ts:Date.now()});
+      if(rv.length>100) rv.length=100;
+      await window.storage.set(RKEY,JSON.stringify(rv),true);
+      await loadAndRenderReviews();
+    }
+    selRating=0; hl(0); document.getElementById('reviewtext').value='';
+    const s=document.getElementById('ffsuccess'); s.classList.add('show');
+    setTimeout(()=>s.classList.remove('show'),3500);
+  }catch(e){ console.error(e); }
+  btn.disabled=false; btn.textContent='שלח ביקורת';
+}
+
+// ── CONTACT ──
+function sendContact(){
+  const nm=document.getElementById('ctname').value.trim()||'גולש TrainCPT';
+  const ms=document.getElementById('ctmsg').value.trim();
+  if(!ms){ alert('אנא כתוב הודעה לפני שליחה'); return; }
+  const sub=encodeURIComponent('TrainCPT — פנייה מ' + nm);
+  const bod=encodeURIComponent(ms+'\n\n— '+nm+'\n(נשלח דרך TrainCPT)');
+  window.location.href=`mailto:${DEST}?subject=${sub}&body=${bod}`;
+  const s=document.getElementById('ctsucc'); s.style.display='block';
+  setTimeout(()=>{ s.style.display='none'; },6000);
 }
 </script>
 </body>
